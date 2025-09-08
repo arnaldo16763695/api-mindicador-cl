@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { TrendingUp, TrendingDown } from "lucide-react";
 
 type Type = "dolar" | "uf" | "euro" | "ipc";
 type SerieItem = { fecha: string; valor: number };
@@ -44,7 +45,7 @@ export default function MainIndicator({
 
             console.log(last, prev);
             console.log(last?.valor, prev?.valor);
-
+            
             return {
               type: t as Type,
               value: last?.valor ?? NaN,
@@ -117,7 +118,7 @@ export default function MainIndicator({
                       up ? "text-emerald-600" : "text-rose-600"
                     }`}
                   >
-                    {up ? <span className="h-4 w-4">↑</span> : <span className="h-4 w-4">↓</span>}
+                    {up ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                     {fmt(delta)}%
                   </div>
                 )}
