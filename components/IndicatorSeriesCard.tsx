@@ -109,6 +109,7 @@ export default function IndicatorSeriesCard({
     ma7: { fecha: string; valor: number }[],
     pct: { fecha: string; valor: number }[]
   ) {
+    if (!selectedDate) return null;
     const idx = rows.findIndex((r) => isoDay(r.fecha) === selectedDate);
     if (idx === -1) return null;
   
@@ -226,7 +227,7 @@ export default function IndicatorSeriesCard({
                 <div className="flex items-center justify-between gap-2">
                   <h4 className="font-medium">
                     Detalle —{" "}
-                   
+                    {new Date(detail.date).toLocaleDateString("es-CL")}
                   </h4>
                   <button
                     type="button"
