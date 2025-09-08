@@ -19,7 +19,7 @@ const MAX_DAYS = 365; // max permitido
 
 export default function Home() {
   const [type, setType] = useState<"dolar" | "uf" | "euro" | "ipc">("dolar");
-
+  const [message, setMessage] = useState<string>("");
   const [range, setRange] = useState(() => {
     const today = new Date();
     const from = new Date(today);
@@ -35,8 +35,11 @@ export default function Home() {
       from.setDate(from.getDate() - (MAX_DAYS - 1));
       setRange({ from: toYYYYMMDD(from), to: toYYYYMMDD(to) });
       // console.log(range)
+      setMessage("Rango máximo permitido: " + MAX_DAYS + " días");
+      setTimeout(() => setMessage(""), 5000);
     } else {
       setRange(next);
+      setMessage("");
     }
   }
 
@@ -60,7 +63,10 @@ export default function Home() {
             onChange={handleRangeChange}
           />
         </div>
+        
+          {message && <p className="text-sm text-red-600">{message}</p> }
+        
       </div>
-    </div>
+        </div>
   );
 }
