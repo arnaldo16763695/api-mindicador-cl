@@ -1,16 +1,8 @@
 "use client";
 import IndicatorTypeSelect from "@/components/IndicadorTypeSelect";
 import IndicatorDateRange from "@/components/IndicatorDateRange";
+import IndicatorSeriesCard from "@/components/IndicatorSeriesCard";
 import MainIndicator from "@/components/MainIndicator";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { daysBetween, toYYYYMMDD } from "@/helpers/helpers";
 import { useState } from "react";
 
@@ -52,21 +44,17 @@ export default function Home() {
       <MainIndicator types={["dolar", "uf", "euro", "ipc"]} />
 
       <div className="flex flex-wrap gap-4">
-        <div>
-          <IndicatorTypeSelect value={type} onChange={setType} />
-        </div>
+        <IndicatorTypeSelect value={type} onChange={setType} />
 
-        <div>
-          <IndicatorDateRange
-            from={range.from}
-            to={range.to}
-            onChange={handleRangeChange}
-          />
-        </div>
-        
-          {message && <p className="text-sm text-red-600">{message}</p> }
-        
+        <IndicatorDateRange
+          from={range.from}
+          to={range.to}
+          onChange={handleRangeChange}
+        />
+        <IndicatorSeriesCard type={type} from={range.from} to={range.to} />
+
+        {message && <p className="text-sm text-red-600">{message}</p>}
       </div>
-        </div>
+    </div>
   );
 }

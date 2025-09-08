@@ -13,3 +13,15 @@ export function daysBetween(a: string, b: string) {
     console.log(+A, +B);
     return Math.abs((+B - +A) / 86400000) + 1;
   }
+
+  
+export function isoDay(s: string) {
+    return s.slice(0, 10); // YYYY-MM-DD
+  }
+
+export function formatNumber(n: number) {
+    return new Intl.NumberFormat("es-CL", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+  }
