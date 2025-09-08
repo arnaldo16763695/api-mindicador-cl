@@ -22,6 +22,9 @@ export default function IndicatorSeriesCard({
   const [pct, setPct] = useState<{ fecha: string; valor: number }[]>([]);
   const [top7, setTop7] = useState<SerieItem[]>([]);  
 
+  //estado par drill-down
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
 
   useEffect(() => {
     let cancelled = false;
@@ -99,6 +102,31 @@ export default function IndicatorSeriesCard({
     setTop7(top);
   }, [rows]);
 
+  // calcul detalle de serie
+  function buildDetail(
+    selectedDate: string | null,
+    rows: { fecha: string; valor: number }[],
+    ma7: { fecha: string; valor: number }[],
+    pct: { fecha: string; valor: number }[]
+  ) {
+    const idx = rows.findIndex((r) => isoDay(r.fecha) === selectedDate);
+    if (idx === -1) return null;
+  
+    const value = Number(rows[idx].valor);
+    const ma = Number(ma7[idx]?.valor ?? NaN);
+    const pc = Number(pct[idx]?.valor ?? NaN);
+  
+    return {
+      date: selectedDate,
+      value,
+      ma7: isNaN(ma) ? null : ma,
+      pct: isNaN(pc) ? null : pc,
+      prevValue: idx > 0 ? Number(rows[idx - 1].valor) : null,
+    };
+  }
+
+  const detail = buildDetail(selectedDate, rows, ma7, pct);
+
 
   return (
     <Card>
@@ -124,13 +152,18 @@ export default function IndicatorSeriesCard({
                 <div className="max-h-64 overflow-y-auto pr-2">
                   <ul className="space-y-1">
                     {rows.map((d) => {                    
-                     
+                     const day = isoDay(d.fecha);
+                     const active = selectedDate === day;
                       return (
                         <li key={d.fecha}>
                           <button
                             type="button"                         
-                            className={`w-full text-left rounded px-1 hover:underline cursor-pointer `}
+                           className={`w-full text-left rounded px-1 hover:underline cursor-pointer ${
+                              active ? "bg-muted" : ""
+                            }`}
+                            onClick={() => setSelectedDate(day)}
                           >
+                            
                             {new Date(d.fecha).toLocaleDateString("es-CL")} —{" "}
                             {formatNumber(d.valor)}
                           </button>
@@ -186,6 +219,43 @@ export default function IndicatorSeriesCard({
                 </div>
               </div>
             </div>
+
+               {/* Detalle (drill-down) */}
+               {detail && (
+              <div className="mt-4 border rounded p-4 bg-muted/30">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="font-medium">
+                    Detalle —{" "}
+                   
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDate(null)}
+                    className="text-sm text-muted-foreground hover:underline"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+                <ul className="mt-2 text-sm space-y-1">
+                  <li>
+                    <b>Valor:</b> {formatNumber(detail.value)}
+                  </li>
+                  <li>
+                    <b>Media movil 7d:</b>{" "}
+                    {detail.ma7 != null ? formatNumber(detail.ma7) : "—"}
+                  </li>
+                  <li>
+                    <b>% cambio vs. dia anterior:</b>{" "}
+                    {detail.pct != null ? `${formatNumber(detail.pct)}%` : "—"}
+                  </li>
+                  {detail.prevValue != null && (
+                    <li className="text-muted-foreground">
+                      (Dia anterior: {formatNumber(detail.prevValue)})
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
 
         
 
