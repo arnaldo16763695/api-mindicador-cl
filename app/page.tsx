@@ -1,3 +1,4 @@
+'use client'
 import IndicatorTypeSelect from "@/components/IndicadorTypeSelect";
 import MainIndicator from "@/components/MainIndicator";
 import {
@@ -21,7 +22,7 @@ export default function Home() {
 
       <div className="flex flex-wrap gap-4">
             <div>
-                <IndicatorTypeSelect value="dolar" />
+                <IndicatorTypeSelect value="dolar" onChange={(v) => console.log(v)} />
             </div>
 
             <div>

@@ -1,4 +1,3 @@
-// components/IndicatorTypeSelect.tsx
 "use client";
 
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -6,14 +5,16 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 type IndicatorType = "dolar" | "uf" | "euro" | "ipc";
 
 export default function IndicatorTypeSelect({
-  value,  
+  value,
+  onChange,
 }: {
-  value: IndicatorType;  
+  value: IndicatorType;
+  onChange: (v: IndicatorType) => void;
 }) {
   return (
     <div className="flex flex-col gap-1">
       <label className="text-sm text-muted-foreground">Indicador</label>
-      <Select value={value} >
+      <Select value={value} onValueChange={(v) => onChange(v as IndicatorType)}>
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Selecciona indicador" />
         </SelectTrigger>
