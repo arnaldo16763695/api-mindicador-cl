@@ -2,6 +2,7 @@
 import IndicatorTypeSelect from "@/components/IndicadorTypeSelect";
 import IndicatorDateRange from "@/components/IndicatorDateRange";
 import IndicatorSeriesCard from "@/components/IndicatorSeriesCard";
+import CrossRateCard from "@/components/JoinRateCard";
 import MainIndicator from "@/components/MainIndicator";
 import { daysBetween, toYYYYMMDD } from "@/helpers/helpers";
 import { useState } from "react";
@@ -37,8 +38,8 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4 space-y-4">
-      <div>
-        <h1>Dashboard Economico Chile (Mindicador)</h1>
+      <div className="w-full text-center p-4">
+        <h1 className="text-2xl font-bold">Dashboard Economico Chile (Mindicador)</h1>
       </div>
 
       <MainIndicator types={["dolar", "uf", "euro", "ipc"]} />
@@ -51,10 +52,10 @@ export default function Home() {
           to={range.to}
           onChange={handleRangeChange}
         />
-        <IndicatorSeriesCard type={type} from={range.from} to={range.to} />
-
-        {message && <p className="text-sm text-red-600">{message}</p>}
       </div>
+        {message && <p className="text-sm text-red-600">{message}</p>}
+        <IndicatorSeriesCard type={type} from={range.from} to={range.to} />
+        <CrossRateCard from={range.from} to={range.to} />
     </div>
   );
 }
